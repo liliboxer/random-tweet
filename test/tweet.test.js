@@ -28,4 +28,19 @@ describe('tweet routes', () => {
       });
   });
 
+  it('GET all tweets', async() => {
+    const tweets = JSON.parse(JSON.stringify(await Tweet.create([
+      { handle: 'maxthelion', text: 'i\'m not a cat, i\'m a lion. rawr' },
+      { handle: 'maxthekitty', text: 'i\'m a kitty' },
+      { handle: 'maxthecat', text: 'i guess i\'m a cat ' },
+    ])));
+    return request(app)
+      .get('/api/v1/tweets')
+      .then(res => {
+        console.log(res.body);
+        expect(res.body).toEqual(tweets);
+      });
+
+  });
+
 });
