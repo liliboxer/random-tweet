@@ -52,6 +52,26 @@ describe('tweet routes', () => {
       });
   });
 
-  
+  it('PATCH, update text only', async() => {
+    const tweet = JSON.parse(JSON.stringify(await Tweet.create(
+      { handle: 'maxthelion', text: 'i\'m not a cat, i\'m a lion. rawr' }
+    )));
+    return request(app)
+      .patch(`/api/v1/tweets/${tweet._id}`)
+      .send({ text: 'meow' })
+      .then(res => {
+        expect(res.body).toEqual({ _id: expect.any(String), __v: 0, handle: 'maxthelion', text: 'meow' });
+      });
+  });
 
+  it('DELETE tweet', async() => {
+    const tweet = JSON.parse(JSON.stringify(await Tweet.create(
+      { handle: 'maxthelion', text: 'i\'m not a cat, i\'m a lion. rawr' }
+    )));
+    return request(app)
+      .delete(`/api/v1/tweets/${tweet._id}`)
+      .then(res => {
+        expect(res.body).toEqual({ _id: expect.any(String), __v: 0, handle: 'maxthelion', text: 'i\'m not a cat, i\'m a lion. rawr' });
+      });
+  });
 });
