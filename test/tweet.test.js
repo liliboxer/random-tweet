@@ -37,10 +37,21 @@ describe('tweet routes', () => {
     return request(app)
       .get('/api/v1/tweets')
       .then(res => {
-        console.log(res.body);
         expect(res.body).toEqual(tweets);
       });
-
   });
+
+  it('GET tweet by id', async() => {
+    const tweet = JSON.parse(JSON.stringify(await Tweet.create(
+      { handle: 'maxthekitty', text: 'i\'m a kitty' }
+    )));
+    return request(app)
+      .get(`/api/v1/tweets/${tweet._id}`)
+      .then(res => {
+        expect(res.body).toEqual({ _id: expect.any(String), __v: 0, handle: 'maxthekitty', text: 'i\'m a kitty' });
+      });
+  });
+
+  
 
 });
